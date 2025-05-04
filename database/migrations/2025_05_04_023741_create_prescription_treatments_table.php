@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('prescription_id')->constrained()->onDelete('cascade');
             $table->foreignId('treatment_id')->constrained()->onDelete('cascade');
-            $table->integer('quantity')->unsigned()->default(1); // Add quantity column, default to 1
+            $table->integer('quantity')->unsigned()->default(1); 
             $table->timestamps();
 
             // Define unique index to prevent duplicate prescription-treatment combinations

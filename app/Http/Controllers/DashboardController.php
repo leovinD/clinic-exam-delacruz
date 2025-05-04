@@ -42,7 +42,8 @@ class DashboardController extends Controller
         // Appointments by status
         $appointmentStatusCounts = Appointment::select('status', DB::raw('COUNT(*) as count'))
             ->groupBy('status')
-            ->pluck('count', 'status');
+            ->pluck('count', 'status')
+            ->toArray(); // Ensure it's an array
 
         // Prescriptions count
         $totalPrescriptions = Prescription::count();
@@ -68,7 +69,7 @@ class DashboardController extends Controller
             'totalPatients',
             'appointmentStatusCounts',
             'totalPrescriptions',
-            'treatmentQuantities', // Pass the treatment quantities to the view
+            'treatmentQuantities',
             'totalPosts',
             'publishedPosts',
             'unpublishedPosts',

@@ -30,34 +30,48 @@
                         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                             <div class="px-6 py-6">
             
-                                <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-3">
+                                <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-4">
                                     <div class="p-6 bg-white rounded-2xl shadow">
                                         <h3 class="text-lg font-semibold text-gray-700">Total Doctors</h3>
                                         <p class="text-3xl font-bold text-green-600">{{ $totalDoctors }}</p>
                                     </div>
-            
+                                
                                     <div class="p-6 bg-white rounded-2xl shadow">
                                         <h3 class="text-lg font-semibold text-gray-700">Total Patients</h3>
                                         <p class="text-3xl font-bold text-blue-600">{{ $totalPatients }}</p>
                                     </div>
-            
+                                
                                     <div class="p-6 bg-white rounded-2xl shadow">
                                         <h3 class="text-lg font-semibold text-gray-700">Prescriptions</h3>
                                         <p class="text-3xl font-bold text-red-600">{{ $totalPrescriptions }}</p>
                                     </div>
+                                
+                                    <div class="p-6 bg-white rounded-2xl shadow">
+                                        <h3 class="text-lg font-semibold text-gray-700">Total Appointments: 
+                                            <span class="font-bold text-indigo-600"> {{ collect($appointmentStatusCounts)->sum() }}</span>
+                                        </h3>
+                                        <hr class="my-6 h-px border-t-0 bg-gray-300 opacity-25" />
+                                        <ul>
+                                            <h3 class="text-lg font-semibold">Appointments Per Status</h3>
+                                            @foreach($appointmentStatusCounts as $status => $count)
+                                                <li class="text-xl font-semibold text-indigo-600">{{ ucfirst($status) }}: {{ $count }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
+                                
             
                                 <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2">
                                     <div class="p-6 bg-white rounded-2xl shadow mb-6">
                                         <h3 class="mb-4 text-xl font-semibold">Appointments Status</h3>
-                                        <div style="width: 100%; height: 200px;"> {{-- Adjust height as needed --}}
+                                        <div style="width: 100%; height: 200px;"> 
                                             <canvas id="appointmentChart"></canvas>
                                         </div>
                                     </div>
             
                                     <div class="p-6 bg-white rounded-2xl shadow mb-6">
                                         <h3 class="mb-4 text-xl font-semibold">Medicines Used (Total Quantity)</h3>
-                                        <div style="width: 100%; height: 200px;"> {{-- Adjust height as needed --}}
+                                        <div style="width: 100%; height: 200px;"> 
                                             <canvas id="medicineQuantityChart"></canvas>
                                         </div>
                                     </div>
@@ -88,7 +102,7 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false, // Important to allow height to be controlled by the container
+                            maintainAspectRatio: false, 
                             plugins: {
                                 legend: {
                                     position: 'bottom'
@@ -113,7 +127,7 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false, // Important to allow height to be controlled by the container
+                            maintainAspectRatio: false, 
                             scales: {
                                 y: {
                                     beginAtZero: true,
@@ -131,7 +145,7 @@
                             },
                             plugins: {
                                 legend: {
-                                    display: false // Hide the label since there's only one dataset
+                                    display: false
                                 }
                             }
                         }

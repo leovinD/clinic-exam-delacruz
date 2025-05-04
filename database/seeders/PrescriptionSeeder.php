@@ -7,7 +7,7 @@ use App\Models\Prescription;
 use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\Appointment;
-use App\Models\Treatment; // Don't forget to use the Treatment model
+use App\Models\Treatment; 
 use Illuminate\Database\Seeder;
 
 class PrescriptionSeeder extends Seeder
