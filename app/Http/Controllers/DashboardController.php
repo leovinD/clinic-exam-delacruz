@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\Sale;
-use App\Models\Region;
+use App\Models\Patient;
+use App\Models\Doctor;
+use App\Models\Appointment;
+use App\Models\Prescription;
+use App\Models\Treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +16,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Blog posts
         $totalPosts = Post::count();
         $publishedPosts = Post::where('is_published', true)->count();
         $unpublishedPosts = Post::where('is_published', false)->count();
@@ -29,45 +33,49 @@ class DashboardController extends Controller
         $postMonths = $postsPerMonth->pluck('month');
         $postCountsPerMonth = $postsPerMonth->pluck('count');
 
-        // Sales totals
-        $totalSalesUnits = Sale::sum('units_sold');
-        $totalSalesValue = Sale::sum(DB::raw('units_sold * unit_price'));
-        $numberOfSales   = Sale::count();
+        // Clinic-related stats
 
-        // Sales data - total units sold per month
-        $salesPerMonth = Sale::selectRaw('DATE_FORMAT(sale_date, "%b %Y") as month, SUM(units_sold) as units_sold')
-            ->groupBy('month')
-            ->orderByRaw('MIN(sale_date) ASC')
-            ->get();
+        // Total doctors and patients
+        $totalDoctors = Doctor::count();
+        $totalPatients = Patient::count();
 
-        // Sales data - total units sold per region
-        $salesPerRegion = Sale::join('regions', 'sales.region_id', '=', 'regions.id')
-            ->select('regions.region_name as region', DB::raw('SUM(sales.units_sold) as total_units'))
-            ->groupBy('region')
-            ->get();
+        // Appointments by status
+        $appointmentStatusCounts = Appointment::select('status', DB::raw('COUNT(*) as count'))
+            ->groupBy('status')
+            ->pluck('count', 'status');
 
-        // Product count per region
-        // $productsPerRegion = DB::table('products')
-        //     ->join('regions', 'products.region_id', '=', 'regions.id')
-        //     ->select('regions.region_name as region', DB::raw('COUNT(*) as product_count'))
-        //     ->groupBy('regions.region_name')
-        //     ->orderBy('regions.region_name')
-        //     ->get();
+        // Prescriptions count
+        $totalPrescriptions = Prescription::count();
+
+        // Treatments with total quantities
+        $treatmentQuantities = Prescription::with('treatments')
+            ->get()
+            ->flatMap(function ($prescription) {
+                return $prescription->treatments->mapWithKeys(function ($treatment) {
+                    return [$treatment->name => $treatment->pivot->quantity];
+                });
+            })
+            ->groupBy(function ($quantity, $name) {
+                return $name;
+            })
+            ->map(function ($quantities) {
+                return $quantities->sum();
+            })
+            ->toArray();
 
         return view('dashboard', compact(
+            'totalDoctors',
+            'totalPatients',
+            'appointmentStatusCounts',
+            'totalPrescriptions',
+            'treatmentQuantities', // Pass the treatment quantities to the view
             'totalPosts',
             'publishedPosts',
             'unpublishedPosts',
             'categoryNames',
             'categoryCounts',
             'postMonths',
-            'postCountsPerMonth',
-            'totalSalesUnits',
-            'totalSalesValue',
-            'numberOfSales',
-            'salesPerMonth',
-            'salesPerRegion',
-            // 'productsPerRegion'
+            'postCountsPerMonth'
         ));
     }
 }

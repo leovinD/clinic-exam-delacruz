@@ -26,11 +26,14 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             TagSeeder::class,
             PostSeeder::class,
-            SaleCategorySeeder::class,
-            ProductSeeder::class,
-            RegionSeeder::class,
-            SalespersonSeeder::class,
-            SaleSeeder::class,
+            PatientSeeder::class,
+            DoctorSeeder::class,
+            AppointmentSeeder::class,
+            TreatmentSeeder::class,
+            PrescriptionSeeder::class,
+            
+            
+            
         ]);
     }
 }
