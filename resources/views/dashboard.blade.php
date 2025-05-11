@@ -41,10 +41,10 @@
                                         <p class="text-3xl font-bold text-blue-600">{{ $totalPatients }}</p>
                                     </div>
                                 
-                                    <div class="p-6 bg-white rounded-2xl shadow">
+                                    {{-- <div class="p-6 bg-white rounded-2xl shadow">
                                         <h3 class="text-lg font-semibold text-gray-700">Prescriptions</h3>
                                         <p class="text-3xl font-bold text-red-600">{{ $totalPrescriptions }}</p>
-                                    </div>
+                                    </div> --}}
                                 
                                     <div class="p-6 bg-white rounded-2xl shadow">
                                         <h3 class="text-lg font-semibold text-gray-700">Total Appointments: 

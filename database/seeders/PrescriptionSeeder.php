@@ -25,7 +25,7 @@ class PrescriptionSeeder extends Seeder
             return;
         }
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 30) as $index) {
             $prescription = Prescription::create([
                 'patient_id' => $patientIds[array_rand($patientIds)],
                 'doctor_id' => $doctorIds[array_rand($doctorIds)],

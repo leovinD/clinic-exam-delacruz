@@ -16,7 +16,7 @@ class AppointmentSeeder extends Seeder
         $doctorIds = Doctor::pluck('id')->toArray();
         $statuses = ['Scheduled', 'Completed', 'Cancelled'];
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 20) as $index) {
             Appointment::create([
                 'patient_id' => $patientIds[array_rand($patientIds)],
                 'doctor_id' => $doctorIds[array_rand($doctorIds)],
